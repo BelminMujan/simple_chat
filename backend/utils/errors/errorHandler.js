@@ -1,6 +1,6 @@
 import log from "../logger/logger.js"
 
-const errorHandler = () => {
+const errorHandler = (req, res, next) => {
     process.on("uncaughtException", (err) => {
         log.error(err)
     })
