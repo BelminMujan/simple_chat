@@ -1,9 +1,10 @@
 import winston, { format } from 'winston'
-const { combine, timestamp, printf } = format;
+const { combine, timestamp, printf, json } = format;
 
 
-const logFormat = printf(({ level, message, timestamp }) => {
-    return `${timestamp} [${level.toUpperCase()}] ${message}`;
+const logFormat = printf(({ level, name, message, timestamp }) => {
+    let msg = typeof message === "string" ? message : JSON.stringify(message, null, 2)
+    return `${timestamp} [${level.toUpperCase()}] ${name ? name + ":" : ""} ${msg}`;
 });
 
 const log = winston.createLogger({
