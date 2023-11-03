@@ -2,11 +2,8 @@ import log from "../../../utils/logger/logger.js"
 const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 
 export const validateLogin = (req, res, next) => {
-    const { email, username, password } = req.body
-    if (email && !emailRegex.test(email)) {
-        return res.status(400).json({ error: "Invalid email format!" })
-    }
-    if ((!email && !username) && !password) {
+    const { username, password } = req.body
+    if (!username && !password) {
         return res.status(400).json({ error: "Password and email or username are required!" })
     }
 

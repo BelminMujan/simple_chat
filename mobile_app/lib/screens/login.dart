@@ -11,12 +11,12 @@ class Login extends StatefulWidget {
 
 class _Login extends State<Login> {
   final formKey = GlobalKey<FormState>();
-  String? email = "";
+  String? username = "";
   String? password = "";
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(title: const Text("App bar")),
+        appBar: AppBar(title: const Text("Chat app login")),
         body: Container(
           padding: const EdgeInsets.fromLTRB(45, 150, 45, 0),
           child: Column(
@@ -31,7 +31,7 @@ class _Login extends State<Login> {
                             label: Text("Email / Username"),
                             hintText: "Enter your email or username"),
                         keyboardType: TextInputType.emailAddress,
-                        onSaved: (newValue) => email = newValue,
+                        onSaved: (newValue) => username = newValue,
                       ),
                       const SizedBox(height: 12),
                       TextFormField(
@@ -51,7 +51,7 @@ class _Login extends State<Login> {
                     if (formKey.currentState!.validate()) {
                       formKey.currentState!.save();
                     }
-                    await login(context, email, password);
+                    await login(context, username, password);
                   }),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,

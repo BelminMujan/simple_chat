@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:mobile_app/screens/login.dart';
 import 'package:mobile_app/utils/api.dart';
 import 'package:mobile_app/widgets/button.dart';
 
@@ -18,6 +17,7 @@ class _Register extends State<Register> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(title: const Text("Chat app register")),
       body: Container(
         padding: const EdgeInsets.fromLTRB(45, 150, 45, 0),
         child: Column(

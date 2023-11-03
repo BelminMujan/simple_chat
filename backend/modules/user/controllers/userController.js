@@ -7,21 +7,17 @@ import env from "../../../config/env.js"
 
 export const login = async (req, res) => {
     try {
-        const { email, username, password } = req.body
+        const { username, password } = req.body
 
-        const query = email ?
-            {
-                where: {
-                    email: email
-                }
-            } :
-            {
-                where: {
+
+        const user = await User.findOne({
+            where: {
+                [Op.or]: {
+                    email: username,
                     username: username
                 }
             }
-
-        const user = await User.findOne(query)
+        })
         if (!user) {
             return res.status(400).json({ error: "Invalid credentials" })
         }
