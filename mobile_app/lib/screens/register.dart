@@ -9,7 +9,7 @@ class Register extends StatefulWidget {
 }
 
 class _Register extends State<Register> {
-  final formKey = GlobalKey<FormState>();
+  final registerKey = GlobalKey<FormState>();
   String? email;
   String? username;
   String? password;
@@ -24,33 +24,41 @@ class _Register extends State<Register> {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Form(
-                key: formKey,
+                key: registerKey,
                 child: Column(
                   children: [
                     TextFormField(
+                      autocorrect: false,
                       decoration:
                           const InputDecoration(label: const Text("Email")),
                       keyboardType: TextInputType.emailAddress,
+                      onSaved: (newValue) => email = newValue,
                     ),
                     const SizedBox(height: 12),
                     TextFormField(
+                      autocorrect: false,
                       decoration:
                           const InputDecoration(label: const Text("Username")),
                       keyboardType: TextInputType.text,
+                      onSaved: (newValue) => username = newValue,
                     ),
                     const SizedBox(height: 12),
                     TextFormField(
+                      autocorrect: false,
                       obscureText: true,
                       decoration:
                           const InputDecoration(label: const Text("Password")),
                       keyboardType: TextInputType.text,
+                      onSaved: (newValue) => password = newValue,
                     ),
                     const SizedBox(height: 12),
                     TextFormField(
+                      autocorrect: false,
                       obscureText: true,
                       decoration: const InputDecoration(
                           label: const Text("Password confirm")),
                       keyboardType: TextInputType.text,
+                      onSaved: (newValue) => passwordConfirm = newValue,
                     ),
                   ],
                 )),
@@ -58,8 +66,8 @@ class _Register extends State<Register> {
             Button(
                 text: "Register",
                 onPress: () async {
-                  if (formKey.currentState!.validate()) {
-                    formKey.currentState!.save();
+                  if (registerKey.currentState!.validate()) {
+                    registerKey.currentState!.save();
                   }
                   await register(
                       context, email, username, password, passwordConfirm);
@@ -71,8 +79,6 @@ class _Register extends State<Register> {
                 GestureDetector(
                   onTap: () {
                     Navigator.pop(context);
-                    // Navigator.push(context,
-                    //     MaterialPageRoute(builder: (context) => const Login()));
                   },
                   child: const Text(
                     "Log in",

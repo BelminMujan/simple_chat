@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'package:mobile_app/screens/chat.dart';
+import 'package:mobile_app/screens/messages.dart';
 import 'package:mobile_app/screens/login.dart';
 
 void main() {
@@ -39,7 +39,7 @@ class MyApp extends StatelessWidget {
     final token = await storage.read(key: 'token');
     final user = await storage.read(key: 'user');
     if (token != null && user != null) {
-      return Chat();
+      return Messages();
     }
     return Login();
   }

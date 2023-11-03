@@ -27,6 +27,7 @@ class _Login extends State<Login> {
                   child: Column(
                     children: [
                       TextFormField(
+                        autocorrect: false,
                         decoration: const InputDecoration(
                             label: Text("Email / Username"),
                             hintText: "Enter your email or username"),
@@ -35,6 +36,7 @@ class _Login extends State<Login> {
                       ),
                       const SizedBox(height: 12),
                       TextFormField(
+                        autocorrect: false,
                         obscureText: true,
                         decoration: const InputDecoration(
                             label: Text("Password"),

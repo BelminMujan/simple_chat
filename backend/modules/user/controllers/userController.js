@@ -4,6 +4,7 @@ import User from "../models/user.js"
 import bcrypt from "bcrypt"
 import jwt from "jsonwebtoken"
 import env from "../../../config/env.js"
+import { UserMessageDto } from "../models/userMessageDto.js"
 
 export const login = async (req, res) => {
     try {
@@ -39,6 +40,8 @@ export const login = async (req, res) => {
 export const register = async (req, res) => {
     try {
         const { email, username, password, passwordConfirm } = req.body
+        log.info(`Registering new user: ${email}, ${username}`)
+
         const user = await User.create({ email, username, password, passwordConfirm })
         const token = await jwt.sign({ email: user.email, username: user.username }, env.jwtKey, { expiresIn: "3h" })
 
@@ -54,5 +57,17 @@ export const autoLogin = (req, res) => {
         log.info("Authenticated")
     } catch (error) {
         log.error(error)
+    }
+}
+
+export const listUsers = async (req, res) => {
+    try {
+        let users = await User.findAll();
+        let usersDto = users.map(u => new UserMessageDto(u))
+        return res.status(200).json({ success: "Users listed!", data: usersDto })
+    } catch (error) {
+        log.error(error)
+        return res.status(500).json({ error: error })
+
     }
 }
