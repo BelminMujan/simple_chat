@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'package:mobile_app/entities/UserDo.dart';
+import 'package:mobile_app/entities/MessageUserDo.dart';
 import 'package:mobile_app/screens/login.dart';
 import 'package:mobile_app/utils/api.dart';
 import 'package:mobile_app/widgets/button.dart';
@@ -13,7 +13,7 @@ class Messages extends StatefulWidget {
 }
 
 class _Messages extends State<Messages> {
-  List<UserDo> users = [];
+  List<MessageUserDo> users = [];
 
   @override
   void initState() {

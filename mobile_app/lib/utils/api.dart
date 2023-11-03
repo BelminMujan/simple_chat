@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
-import 'package:mobile_app/entities/UserDo.dart';
+import 'package:mobile_app/entities/MessageUserDo.dart';
 import 'package:mobile_app/screens/login.dart';
 import 'package:mobile_app/screens/messages.dart';
 
@@ -72,10 +72,10 @@ logout(context) async {
       MaterialPageRoute(builder: (context) => const Login()), (route) => false);
 }
 
-Future<List<UserDo>> listUsers() async {
+Future<List<MessageUserDo>> listUsers() async {
   String route = "$api/api/users/list_users";
   const storage = FlutterSecureStorage();
-  List<UserDo> users = [];
+  List<MessageUserDo> users = [];
   String? token = await storage.read(key: "token");
   final res = await http.get(
     Uri.parse(route),
@@ -89,7 +89,7 @@ Future<List<UserDo>> listUsers() async {
     final List<dynamic> usersData = parsedResponse["data"];
     print(usersData);
     users = usersData.map((u) {
-      return UserDo(username: u["username"], img: u["image"]);
+      return MessageUserDo(username: u["username"], img: u["image"]);
     }).toList();
   }
   return users;
