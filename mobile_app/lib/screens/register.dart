@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mobile_app/screens/login.dart';
+import 'package:mobile_app/utils/api.dart';
 import 'package:mobile_app/widgets/button.dart';
 
 class Register extends StatefulWidget {
@@ -9,6 +10,11 @@ class Register extends StatefulWidget {
 }
 
 class _Register extends State<Register> {
+  final formKey = GlobalKey<FormState>();
+  String? email;
+  String? username;
+  String? password;
+  String? passwordConfirm;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -18,36 +24,46 @@ class _Register extends State<Register> {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Form(
+                key: formKey,
                 child: Column(
-              children: [
-                TextFormField(
-                  decoration: const InputDecoration(label: const Text("Email")),
-                  keyboardType: TextInputType.emailAddress,
-                ),
-                const SizedBox(height: 12),
-                TextFormField(
-                  decoration:
-                      const InputDecoration(label: const Text("Username")),
-                  keyboardType: TextInputType.text,
-                ),
-                const SizedBox(height: 12),
-                TextFormField(
-                  obscureText: true,
-                  decoration:
-                      const InputDecoration(label: const Text("Password")),
-                  keyboardType: TextInputType.text,
-                ),
-                const SizedBox(height: 12),
-                TextFormField(
-                  obscureText: true,
-                  decoration: const InputDecoration(
-                      label: const Text("Password confirm")),
-                  keyboardType: TextInputType.text,
-                ),
-              ],
-            )),
+                  children: [
+                    TextFormField(
+                      decoration:
+                          const InputDecoration(label: const Text("Email")),
+                      keyboardType: TextInputType.emailAddress,
+                    ),
+                    const SizedBox(height: 12),
+                    TextFormField(
+                      decoration:
+                          const InputDecoration(label: const Text("Username")),
+                      keyboardType: TextInputType.text,
+                    ),
+                    const SizedBox(height: 12),
+                    TextFormField(
+                      obscureText: true,
+                      decoration:
+                          const InputDecoration(label: const Text("Password")),
+                      keyboardType: TextInputType.text,
+                    ),
+                    const SizedBox(height: 12),
+                    TextFormField(
+                      obscureText: true,
+                      decoration: const InputDecoration(
+                          label: const Text("Password confirm")),
+                      keyboardType: TextInputType.text,
+                    ),
+                  ],
+                )),
             const SizedBox(height: 12),
-            Button(text: "Register", onPress: () => {}),
+            Button(
+                text: "Register",
+                onPress: () async {
+                  if (formKey.currentState!.validate()) {
+                    formKey.currentState!.save();
+                  }
+                  await register(
+                      context, email, username, password, passwordConfirm);
+                }),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
