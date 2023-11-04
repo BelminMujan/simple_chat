@@ -22,7 +22,9 @@ class _MessageUser extends State<MessageUser> {
     return GestureDetector(
       onTap: () {
         Navigator.push(
-            context, MaterialPageRoute(builder: (context) => Chat()));
+            context,
+            MaterialPageRoute(
+                builder: (context) => Chat(username: widget.username)));
       },
       child: Container(
         padding: EdgeInsets.symmetric(horizontal: 25, vertical: 10),

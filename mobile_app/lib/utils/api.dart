@@ -19,12 +19,12 @@ Future<void> login(context, email, password) async {
   final Map<String, dynamic> parsedResponse = jsonDecode(res.body);
   if (parsedResponse.containsKey("success")) {
     final String? token = parsedResponse["data"]["token"];
-    final Map<String, dynamic> user = parsedResponse["data"]["user"];
+    var user = parsedResponse["data"]["user"];
     if (token != null && token != "") {
       final storage = FlutterSecureStorage();
 
       await storage.write(key: "token", value: token);
-      await storage.write(key: "user", value: user.toString());
+      await storage.write(key: "user", value: jsonEncode(user));
       Navigator.pushAndRemoveUntil(
           context,
           MaterialPageRoute(builder: (context) => const Messages()),
@@ -55,7 +55,7 @@ Future<void> register(
       final storage = FlutterSecureStorage();
 
       await storage.write(key: "token", value: token);
-      await storage.write(key: "user", value: user.toString());
+      await storage.write(key: "user", value: jsonEncode(user));
       Navigator.pushAndRemoveUntil(
           context,
           MaterialPageRoute(builder: (context) => const Messages()),

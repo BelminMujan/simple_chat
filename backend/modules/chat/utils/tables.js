@@ -1,4 +1,4 @@
-import log from "../../../utils/logger/logger";
+import log from "../../../utils/logger/logger.js";
 
 const createMessagesTableQuery = `CREATE TABLE IF NOT EXISTS simple_chat.messages (
     message_id UUID,
@@ -21,20 +21,19 @@ const createUsersTableQuery = `CREATE TABLE IF NOT EXISTS simple_chat.rooms (
 const createTables = async (client) => {
     try {
         log.info("Migrating cassandra tables!")
-        [createMessagesTableQuery, createUsersTableQuery].forEach(async (qq) => {
-            await client.execute(qq)
-                .then(() => {
-                    log.info('Table created or already exists');
-                })
-                .then(() => {
-                    log.info('Index created or already exists');
-                })
-                .catch(error => {
-                    log.error("Error creating cassandra tables: ", error)
-                });
+        client.execute(createMessagesTableQuery).then(res => {
+            log.info("Cassandra messages table created")
+        }).catch(e => {
+            log.error("Error creating messages table in cassandra: ", e)
         })
+        client.execute(createUsersTableQuery).then(res => {
+            log.info("Cassandra rooms table created")
+        }).catch(e => {
+            log.error("Error creating messages table in cassandra: ", e)
+        })
+
     } catch (error) {
-        log.error("Error creating cassandra tables: ", error)
+        log.error("Cassandra createTables error: ", error)
     }
 }
 

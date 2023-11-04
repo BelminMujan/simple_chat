@@ -3,6 +3,7 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:mobile_app/entities/MessageUserDo.dart';
 import 'package:mobile_app/screens/login.dart';
 import 'package:mobile_app/utils/api.dart';
+import 'package:mobile_app/utils/userHelpers.dart';
 import 'package:mobile_app/widgets/button.dart';
 import 'package:mobile_app/widgets/messageUser.dart';
 
@@ -27,14 +28,6 @@ class _Messages extends State<Messages> {
       users = fetchedUsers;
     });
   }
-  // List<UserDo> users = [
-  //   UserDo(username: "Emina Skoko", img: "", lastMessage: "Hej cao slatkisu"),
-  //   UserDo(
-  //       username: "Elmin Mujan",
-  //       img: "",
-  //       lastMessage:
-  //           "Selam alejc burazeru moj sta ima kaki si sta se radi. Kako sut voji evo mojisu dobro jako i tako to"),
-  // ];
 
   @override
   Widget build(BuildContext context) {

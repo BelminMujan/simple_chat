@@ -1,6 +1,10 @@
 import { Router } from "express"
-import { authenticate } from "../user/middlewares/authorize"
-import { loadMessagesPerChat, sendMessage } from "./controllers/chatController"
+import { authenticate } from "../user/middlewares/authorize.js"
+import { initializeChat, loadMessagesPerChat, sendMessage } from "./controllers/chatController.js"
+import createTables from "./utils/tables.js"
+import client from "./services/cassandra.js"
+
+createTables(client)
 
 
 const routes = Router()

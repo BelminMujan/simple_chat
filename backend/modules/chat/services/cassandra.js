@@ -1,11 +1,12 @@
 import cassandra from "cassandra-driver"
+import env from "../../../config/env.js"
 
-let authProvider = new cassandra.auth.PlainTextAuthProvider(process.env.CASSANDRA_USER, process.env.CASSANDRA_PASS)
+let authProvider = new cassandra.auth.PlainTextAuthProvider(env.cassandrUser, env.cassandrPass)
 const contactPoints = ["127.0.0.1:9042"]
 
 const localDataCenter = "datacenter1"
 
-const keyspace = "jobspot"
+const keyspace = "simple_chat"
 
 const client = new cassandra.Client({
     contactPoints: contactPoints,

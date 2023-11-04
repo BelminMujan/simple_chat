@@ -11,7 +11,7 @@ export const login = async (req, res) => {
         const { username, password } = req.body
 
 
-        const user = await User.findOne({
+        let user = await User.findOne({
             where: {
                 [Op.or]: {
                     email: username,
@@ -24,7 +24,10 @@ export const login = async (req, res) => {
         }
 
         const passCorrect = await bcrypt.compare(password, user.password)
-
+        user = user.get();
+        delete user.password
+        delete user.createdAt
+        delete user.updatedAt
         if (!passCorrect) {
             return res.status(400).json({ error: "Invalid credentials" })
         }
@@ -42,7 +45,11 @@ export const register = async (req, res) => {
         const { email, username, password, passwordConfirm } = req.body
         log.info(`Registering new user: ${email}, ${username}`)
 
-        const user = await User.create({ email, username, password, passwordConfirm })
+        let user = await User.create({ email, username, password, passwordConfirm })
+        user = user.get();
+        delete user.password
+        delete user.createdAt
+        delete user.updatedAt
         const token = await jwt.sign({ email: user.email, username: user.username }, env.jwtKey, { expiresIn: "3h" })
 
         return res.status(201).json({ success: "User registerd", data: { user: user, token: token } })
@@ -62,7 +69,13 @@ export const autoLogin = (req, res) => {
 
 export const listUsers = async (req, res) => {
     try {
-        let users = await User.findAll();
+        let users = await User.findAll({
+            where: {
+                id: {
+                    [Op.not]: req.user.id,
+                },
+            },
+        });
         let usersDto = users.map(u => new UserMessageDto(u))
         return res.status(200).json({ success: "Users listed!", data: usersDto })
     } catch (error) {
