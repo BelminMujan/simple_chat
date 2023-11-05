@@ -3,13 +3,11 @@ import 'package:mobile_app/screens/chat.dart';
 
 class MessageUser extends StatefulWidget {
   final String username;
+  final int id;
   // final String lastMessage;
   final String img;
   const MessageUser(
-      {Key? key,
-      required this.username,
-      // required this.lastMessage,
-      required this.img})
+      {Key? key, required this.username, required this.id, required this.img})
       : super(key: key);
 
   @override
@@ -24,7 +22,10 @@ class _MessageUser extends State<MessageUser> {
         Navigator.push(
             context,
             MaterialPageRoute(
-                builder: (context) => Chat(username: widget.username)));
+                builder: (context) => Chat(
+                      username: widget.username,
+                      participantId: widget.id,
+                    )));
       },
       child: Container(
         padding: EdgeInsets.symmetric(horizontal: 25, vertical: 10),

@@ -89,7 +89,8 @@ Future<List<MessageUserDo>> listUsers() async {
     final List<dynamic> usersData = parsedResponse["data"];
     print(usersData);
     users = usersData.map((u) {
-      return MessageUserDo(username: u["username"], img: u["image"]);
+      return MessageUserDo(
+          id: u["id"], username: u["username"], img: u["image"]);
     }).toList();
   }
   return users;

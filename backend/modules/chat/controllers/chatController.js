@@ -34,8 +34,7 @@ const sendMessage = async (room_id, from, message) => {
     }
 };
 
-const loadMessagesPerChat = async (req, res) => {
-    const room_id = req.params.room_id
+const loadMessagesPerChat = async (room_id) => {
     const query = `SELECT * FROM simple_chat.messages WHERE room_id = ?;`
     let params = [room_id]
     try {
@@ -68,7 +67,7 @@ const loadRooms = async (req, res, next) => {
 
 const getRoom = async (u1, u2) => {
     try {
-        room_id = `room_${u1 > u2 ? u1 : u2}_${u1 < u2 ? u1 : u2}`
+        let room_id = `room_${u1 > u2 ? u1 : u2}_${u1 < u2 ? u1 : u2}`
         const query = `INSERT INTO simple_chat.rooms (room_id, user1, user2) VALUES (?,?,?) if not exists;`;
         const params = [room_id, parseInt(u1), parseInt(u2)];
         await client.execute(query, params, { prepare: true })
@@ -108,17 +107,19 @@ const initializeChat = (server) => {
     io.on("connection", async (socket) => {
         let userId = null
         let token = socket.handshake.headers.authorization
-        let tokenData = await jwt.verify(token.split(" ")[1], env.jwtKey)
+        let tokenData = jwt.verify(token.split(" ")[1], env.jwtKey)
         let user = await User.findOne({ where: { email: tokenData.email } })
-        userId = user.id
-        log.info(userId)
+        userId = user["id"]
+        log.info("Chat invoked by user: ")
+        log.info(user)
         if (userId) {
 
-            socket.once("join_room", async (participant) => {
-                log.info("Joining room: ", participant)
+            socket.on("join_room", async (participant) => {
+                log.info("Joining room: " + participant)
                 let room = await getRoom(userId, participant)
                 socket.join(room.room_id)
                 socket.emit("joined_room", room.room_id)
+                log.info("Joined room")
                 let messages = await loadMessagesPerChat(room.room_id)
                 if (messages && messages.rowLength !== 0) {
                     io.to(room.room_id).emit("load_messages", messages.rows)
@@ -137,10 +138,16 @@ const initializeChat = (server) => {
 
             socket.on("message", async (data) => {
                 log.info("Message received");
-                log.info(data);
-                let sentMessage = await sendMessage(data.room_id, userId, data.message)
-                io.to(data.room_id).emit("message", sentMessage)
+                let obj = JSON.parse(data)
+                let sentMessage = await sendMessage(obj.room_id, userId, obj.message)
+                log.info("Messages sent")
+                log.info(sentMessage)
+                io.to(obj.room_id).emit("message", sentMessage)
             })
+
+            socket.on('disconnect', () => {
+                log.info(`Chat client disconnecting`)
+            });
         }
     })
 }

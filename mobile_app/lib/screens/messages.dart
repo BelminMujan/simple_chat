@@ -43,6 +43,7 @@ class _Messages extends State<Messages> {
         children: users
             .map((user) => MessageUser(
                   username: user.username,
+                  id: user.id,
                   // lastMessage: user.lastMessage!,
                   img: user.img ?? "",
                 ))

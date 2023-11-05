@@ -12,7 +12,9 @@ class Message extends StatelessWidget {
       alignment: fromCurrent ? Alignment.centerRight : Alignment.centerLeft,
       child: Container(
         padding: const EdgeInsets.all(10),
-        // margin: const EdgeInsets.symmetric(vertical: 3, horizontal: 10),
+        margin: const EdgeInsets.symmetric(vertical: 3),
+        constraints: BoxConstraints(
+            maxWidth: MediaQuery.of(context).size.width * (70 / 100)),
         decoration: BoxDecoration(
             color: fromCurrent ? Colors.blueAccent : Color(0xFFadabaa),
             borderRadius: BorderRadius.only(

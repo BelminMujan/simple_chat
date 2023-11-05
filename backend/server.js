@@ -13,6 +13,8 @@ import { initializeChat } from "./modules/chat/controllers/chatController.js"
 
 
 const app = express()
+const server = http.createServer(app)
+
 app.use(express.json())
 errorHandler()
 app.use(cors())
@@ -20,7 +22,6 @@ app.use("/api/users", userRoutes)
 app.use("/api/messages", messagesRoutes)
 
 
-const server = http.createServer(app)
 initializeChat(server)
 server.listen(env.port, (error) => {
     if (error || !env.port) {
