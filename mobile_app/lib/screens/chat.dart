@@ -2,7 +2,6 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:mobile_app/entities/MessageDo.dart';
 import 'package:mobile_app/entities/User.dart';
 import 'package:mobile_app/utils/userHelpers.dart';
